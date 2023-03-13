@@ -1,39 +1,64 @@
 # python3
 
-
 def build_heap(data):
     swaps = []
-    # TODO: Creat heap and heap sort
-    # try to achieve  O(n) and not O(n2)
-
-
+    n = len(data)
+    # Taisu ciklu pa vecāku mezgliem koka indeksu sarakstā (sākot no apakšas)
+    for i in range(n//2, -1, -1):
+        # Turpina mainīt elementus, līdz koka īpašība ir apmierinoša
+        while(True):
+            # Inicializē minimālā elementa indeksu
+            min_index = i
+            # Aprēķina kreisās un labās bērna mezglu indeksus
+            a = 2*i + 1
+            b = 2*i + 2
+            # Jāizvēlās kreiso vai labo bērnu
+            # Pārbauda, vai kreisais bērna mezgls ir mazāks par pašreizējo elementu
+            if a < n and data[a] < data[min_index]:
+                # Ja ir, minimālā elementa indekss = kreisā bērna indekss
+                min_index = a
+            # Tas pats ar labo
+            if b < n and data[b] < data[min_index]:
+                min_index = b
+            # Ja minimālais indekss pamainījās, apmaina elementus (swap)
+            if i != min_index:
+                # Pievieno sarakstam tos elementus kurus mainām
+                swaps.append((i, min_index))
+                # Apmaina elementus skrakstā "data"
+                data[i], data[min_index] = data[min_index], data[i]
+                # Atjauno indeksu
+                i = min_index
+                # Turpinā 
+                continue
+            # Ja minimālā elementa indekss nav izmainīts, iziet no cikla
+            break
+    
     return swaps
-
 
 def main():
     
-    # TODO : add input and corresponding checks
-    # add another input for I or F 
-    # first two tests are from keyboard, third test is from a file
-
-
-    # input from keyboard
-    n = int(input())
-    data = list(map(int, input().split()))
-
-    # checks if lenght of data is the same as the said lenght
+    text = input()
+    if "I" in text:
+        n = int(input())
+        data = list(map(int, input().split()))
+    elif "F" in text:
+        text2 = input()
+        if "a" in text2:
+            return()
+        with open ("tests/"+text2, encoding="utf-8") as fails:
+            n = int (fails.readline())
+            data = list(map(int, fails.readline().split()))
+            
+    else:
+        return()
+    
+    # Pārbauda, vai saraksta "data" garums ir vienāds ar n
     assert len(data) == n
 
-    # calls function to assess the data 
-    # and give back all swaps
     swaps = build_heap(data)
-
-    # TODO: output how many swaps were made, 
-    # this number should be less than 4n (less than 4*len(data))
-
-
-    # output all swaps
+    # Izvada swaps skaitu
     print(len(swaps))
+    # Izvada swaps 
     for i, j in swaps:
         print(i, j)
 
